@@ -1,0 +1,24 @@
+{
+    "NQ": [
+        {
+            "type": "TrendLine",
+            "points": [
+                {
+                    "time": 1658188800,
+                    "logical": 2794,
+                    "price": 426.97028193416685
+                },
+                {
+                    "time": null,
+                    "logical": 2993,
+                    "price": 343.65616238836435
+                }
+            ],
+            "options": {
+                "lineColor": "#1E80F0",
+                "lineStyle": 0,
+                "width": 4
+            }
+        }
+    ]
+}
