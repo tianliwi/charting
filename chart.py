@@ -35,6 +35,7 @@ if __name__ == '__main__':
    
     chart = Chart(position='right', toolbox=True, width=1920, height=1080, inner_width=0.6)
     chart.unplayed_quotes = df_future
+    # chart.candle_style(up_color='#000000', border_up_color='#42bda8', wick_up_color='#42bda8', down_color='#f23645', border_down_color='#f23645', wick_down_color='#f23645')
     chart.topbar.textbox('symbol', 'NQ')
     chart.topbar.switcher('timeframe', ('5 mins', '15 mins', '1 hour'), default='5 mins', func=on_timeframe_selection)
     chart.topbar.button('replay', 'Play', func=on_replay)
@@ -42,6 +43,7 @@ if __name__ == '__main__':
     chart.grid(vert_enabled=False, horz_enabled=False)
 
     chart2 = chart.create_subchart(toolbox=False, position='left', width=0.4, height=1, sync=True)
+    # chart2.candle_style(up_color='#000000', border_up_color='#42bda8', wick_up_color='#42bda8', down_color='#f23645', border_down_color='#f23645', wick_down_color='#f23645')
     chart2.topbar.textbox('symbol', 'ES')
     chart2.unplayed_quotes = df_future
     chart2.grid(vert_enabled=False, horz_enabled=False)
