@@ -11,6 +11,7 @@ setup(
     zip_safe= False,
     install_requires=[
         'requests',
-        'pywebview'
+        'pywebview',
+        'pandas'
     ]
 )

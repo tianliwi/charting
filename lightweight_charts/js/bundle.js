@@ -773,24 +773,44 @@ var Lib = function(t, e) {
             return Math.abs((n - s) * r - (o - i) * a + o * s - n * i) / Math.sqrt((n - s) ** 2 + (o - i) ** 2) <= e
         }
     }
-    class D extends c {
-        constructor(t, e, i, s) {
-            super(t, e, i, s)
-        }
-        draw(t) {
-            t.useBitmapCoordinateSpace((t => {
-                const e = t.context,
-                    i = this._getScaledCoordinates(t);
-                if (!i) return;
-                e.lineWidth = this._options.width, e.strokeStyle = this._options.lineColor, p(e, this._options.lineStyle), e.fillStyle = this._options.fillColor;
-                const s = Math.min(i.x1, i.x2),
-                    o = Math.min(i.y1, i.y2),
-                    n = Math.abs(i.x1 - i.x2),
-                    r = Math.abs(i.y1 - i.y2);
-                e.strokeRect(s, o, n, r), e.fillRect(s, o, n, r), this._hovered && (this._drawEndCircle(t, s, o), this._drawEndCircle(t, s + n, o), this._drawEndCircle(t, s + n, o + r), this._drawEndCircle(t, s, o + r))
-            }))
-        }
+class D extends c {
+    constructor(t, e, i, s) {
+        super(t, e, i, s);
     }
+
+    draw(t) {
+        t.useBitmapCoordinateSpace((t) => {
+            const e = t.context;
+            const i = this._getScaledCoordinates(t);
+
+            if (!i) return;
+
+            e.lineWidth = 1;
+            e.strokeStyle = this._options.lineColor;
+            p(e, this._options.lineStyle);
+            e.fillStyle = this._options.fillColor;
+
+            const s = Math.min(i.x1, i.x2);
+            const o = Math.min(i.y1, i.y2);
+            const n = Math.abs(i.x1 - i.x2);
+            const r = Math.abs(i.y1 - i.y2);
+
+            e.strokeRect(s, o, n, r);
+            e.fillRect(s, o, n, r);
+
+            if (this._hovered) {
+                this._drawEndCircles(t, s, o, n, r);
+            }
+        });
+    }
+
+    _drawEndCircles(t, s, o, n, r) {
+        this._drawEndCircle(t, s, o);
+        this._drawEndCircle(t, s + n, o);
+        this._drawEndCircle(t, s + n, o + r);
+        this._drawEndCircle(t, s, o + r);
+    }
+}
     class E extends m {
         constructor(t) {
             super(t)
@@ -1277,7 +1297,8 @@ var Lib = function(t, e) {
         static RAY_SVG = '<rect x="8" y="14" width="17" height="1"/><path d="M3.67,14.5l2.83,2.83l2.83-2.83L6.5,11.67L3.67,14.5z M7.91,14.5L6.5,15.91L5.09,14.5l1.41-1.41L7.91,14.5z"/>';
         static BOX_SVG = '<rect x="8" y="6" width="12" height="1"/><rect x="9" y="22" width="11" height="1"/><path d="M3.67,6.5L6.5,9.33L9.33,6.5L6.5,3.67L3.67,6.5z M7.91,6.5L6.5,7.91L5.09,6.5L6.5,5.09L7.91,6.5z"/><path d="M19.67,6.5l2.83,2.83l2.83-2.83L22.5,3.67L19.67,6.5z M23.91,6.5L22.5,7.91L21.09,6.5l1.41-1.41L23.91,6.5z"/><path d="M19.67,22.5l2.83,2.83l2.83-2.83l-2.83-2.83L19.67,22.5z M23.91,22.5l-1.41,1.41l-1.41-1.41l1.41-1.41L23.91,22.5z"/><path d="M3.67,22.5l2.83,2.83l2.83-2.83L6.5,19.67L3.67,22.5z M7.91,22.5L6.5,23.91L5.09,22.5l1.41-1.41L7.91,22.5z"/><rect x="22" y="9" width="1" height="11"/><rect x="6" y="9" width="1" height="11"/>';
         static VERT_SVG = P.RAY_SVG;
-        static SD_SVG = '<rect x="8" y="6" width="12" height="1"/><rect x="9" y="22" width="11" height="1"/><path d="M3.67,6.5L6.5,9.33L9.33,6.5L6.5,3.67L3.67,6.5z M7.91,6.5L6.5,7.91L5.09,6.5L6.5,5.09L7.91,6.5z"/><path d="M19.67,6.5l2.83,2.83l2.83-2.83L22.5,3.67L19.67,6.5z M23.91,6.5L22.5,7.91L21.09,6.5l1.41-1.41L23.91,6.5z"/><path d="M19.67,22.5l2.83,2.83l2.83-2.83l-2.83-2.83L19.67,22.5z M23.91,22.5l-1.41,1.41l-1.41-1.41l1.41-1.41L23.91,22.5z"/><path d="M3.67,22.5l2.83,2.83l2.83-2.83L6.5,19.67L3.67,22.5z M7.91,22.5L6.5,23.91L5.09,22.5l1.41-1.41L7.91,22.5z"/><rect x="22" y="9" width="1" height="11"/><rect x="6" y="9" width="1" height="11"/>';
+        static SD_SVG = '<path d="M0 0 C2.97 0 5.94 0 9 0 C9 0.99 9 1.98 9 3 C7.02 3 5.04 3 3 3 C3 5.97 3 8.94 3 12 C4.98 12 6.96 12 9 12 C9 12.99 9 13.98 9 15 C6.03 15 3.06 15 0 15 C0 10.05 0 5.1 0 0 Z " fill="#f0f0f0" transform="translate(17,5)"/><path d="M0 0 C2.97 0 5.94 0 9 0 C9 0.99 9 1.98 9 3 C6.03 3 3.06 3 0 3 C0 2.01 0 1.02 0 0 Z " fill="#f0f0f0" transform="translate(2,17)"/><path d="M0 0 C0.99 0 1.98 0 3 0 C3 2.97 3 5.94 3 9 C2.01 9 1.02 9 0 9 C0 6.03 0 3.06 0 0 Z " fill="#f0f0f0" transform="translate(26,8)"/><path d="M0 0 C2.97 0 5.94 0 9 0 C9 0.99 9 1.98 9 3 C6.03 3 3.06 3 0 3 C0 2.01 0 1.02 0 0 Z " fill="#f0f0f0" transform="translate(5,5)"/><path d="M0 0 C1.98 0 3.96 0 6 0 C6 0.99 6 1.98 6 3 C4.02 3 2.04 3 0 3 C0 2.01 0 1.02 0 0 Z " fill="#f0f0f0" transform="translate(5,11)"/><path d="M0 0 C0.99 0 1.98 0 3 0 C3 0.99 3 1.98 3 3 C2.01 3 1.02 3 0 3 C0 2.01 0 1.02 0 0 Z " fill="#f0f0f0" transform="translate(11,14)"/><path d="M0 0 C0.99 0 1.98 0 3 0 C3 0.99 3 1.98 3 3 C2.01 3 1.02 3 0 3 C0 2.01 0 1.02 0 0 Z " fill="#f0f0f0" transform="translate(2,8)"/>';
+        static Fib_SVG = '<path d="M0 0 C1.98 0 3.96 0 6 0 C6 0.66 6 1.32 6 2 C4.68 2 3.36 2 2 2 C2 2.66 2 3.32 2 4 C3.32 4 4.64 4 6 4 C6 4.66 6 5.32 6 6 C4.68 6 3.36 6 2 6 C2 6.66 2 7.32 2 8 C3.32 8 4.64 8 6 8 C6 8.66 6 9.32 6 10 C4.02 10 2.04 10 0 10 C0 6.7 0 3.4 0 0 Z " fill="#f0f0f0" transform="translate(20,7)"/><path d="M0 0 C2.64 0 5.28 0 8 0 C8 0.66 8 1.32 8 2 C6.02 2 4.04 2 2 2 C2 2.66 2 3.32 2 4 C3.32 4 4.64 4 6 4 C6 4.66 6 5.32 6 6 C4.68 6 3.36 6 2 6 C2 7.32 2 8.64 2 10 C1.34 10 0.68 10 0 10 C0 6.7 0 3.4 0 0 Z " fill="#f0f0f0" transform="translate(2,7)"/><path d="M0 0 C1.98 0 3.96 0 6 0 C6 0.66 6 1.32 6 2 C5.34 2 4.68 2 4 2 C4 3.98 4 5.96 4 8 C4.66 8 5.32 8 6 8 C6 8.66 6 9.32 6 10 C4.02 10 2.04 10 0 10 C0 9.34 0 8.68 0 8 C0.66 8 1.32 8 2 8 C2 6.02 2 4.04 2 2 C1.34 2 0.68 2 0 2 C0 1.34 0 0.68 0 0 Z " fill="#f0f0f0" transform="translate(12,7)"/><path d="M0 0 C0.66 0 1.32 0 2 0 C2 0.66 2 1.32 2 2 C1.34 2 0.68 2 0 2 C0 1.34 0 0.68 0 0 Z " fill="#f0f0f0" transform="translate(26,13)"/><path d="M0 0 C0.66 0 1.32 0 2 0 C2 0.66 2 1.32 2 2 C1.34 2 0.68 2 0 2 C0 1.34 0 0.68 0 0 Z " fill="#f0f0f0" transform="translate(26,9)"/>';
         div;
         activeIcon = null;
         buttons = [];
@@ -1303,7 +1324,7 @@ var Lib = function(t, e) {
             let t = document.createElement("div");
             t.classList.add("toolbox");
             this.buttons.push(this._makeToolBoxElement(C, "KeyT", P.TREND_SVG));
-            this.buttons.push(this._makeToolBoxElement(fib, "KeyF", P.TREND_SVG));
+            this.buttons.push(this._makeToolBoxElement(fib, "KeyF", P.Fib_SVG));
             this.buttons.push(this._makeToolBoxElement(sd, "KeyS", P.SD_SVG));
             this.buttons.push(this._makeToolBoxElement(w, "KeyH", P.HORZ_SVG));
             this.buttons.push(this._makeToolBoxElement(M, "KeyR", P.RAY_SVG));

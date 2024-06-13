@@ -27,16 +27,22 @@ def on_replay(target_chart: Chart):
             chart.update(quote)
             chart.unplayed_quotes = chart.unplayed_quotes.drop(chart.unplayed_quotes.index[0])
 
+def on_buy(chart: Chart):
+    quote = chart.unplayed_quotes.iloc[0]
+    print('buy', quote.open)
+
 if __name__ == '__main__':
    
-    chart = Chart(toolbox=True, width=1920, height=1080, inner_width=0.7)
+    chart = Chart(position='right', toolbox=True, width=1920, height=1080, inner_width=0.6)
     chart.unplayed_quotes = df_future
     chart.topbar.textbox('symbol', 'NQ')
     chart.topbar.switcher('timeframe', ('5 mins', '15 mins', '1 hour'), default='5 mins', func=on_timeframe_selection)
     chart.topbar.button('replay', 'Play', func=on_replay)
+    chart.topbar.button('buy', 'Buy', func=on_buy)
     chart.grid(vert_enabled=False, horz_enabled=False)
 
-    chart2 = chart.create_subchart(toolbox=False, position='right', width=0.3, height=1, sync=True)
+    chart2 = chart.create_subchart(toolbox=False, position='left', width=0.4, height=1, sync=True)
+    chart2.topbar.textbox('symbol', 'ES')
     chart2.unplayed_quotes = df_future
     chart2.grid(vert_enabled=False, horz_enabled=False)
 
